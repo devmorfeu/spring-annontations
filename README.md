@@ -17,6 +17,7 @@ _Este documento descreve várias anotações disponíveis no Spring ‘Framework
 - [Spring Messaging 6.0.12](#spring-messaging)
 - [Spring Test 6.0.12](#spring-test)
 - [Spring Web 6.0.12](#spring-web)
+- [Spring JMS 6.0.12](#spring-jms)
 
 ## Spring-beans
 
@@ -1333,4 +1334,247 @@ ${\color{yellow}@GetExchange}$ : _@GetExchange usada para mapear métodos de man
 - `value / url`: _Define o caminho da URL da solicitação GET a ser manipulada pelo método._
 - `accept`: _Permite que você defina os tipos de mídia que o método aceitará como resposta._
 
+${\color{yellow}@GetMapping}$ : _@GetMapping é uma anotação do Spring ‘Framework’ usada para mapear solicitações HTTP GET em métodos de controlador específicos. Essa anotação é uma forma concisa de definir um método de controlador que lida com solicitações GET para um recurso específico em uma aplicação web. A anotação @GetMapping é uma das anotações de mapeamento HTTP que simplifica a configuração do roteamento em aplicativos Spring MVC._
+
+**Parâmetros:**
+
+- `name`: _Alias para @RequestMapping.name. Especifica o nome da rota que será usada._
+- `value`: _Alias para @RequestMapping.value. Especifica o URI do ponto de extremidade do recurso que deve corresponder à solicitação GET. O URI é uma ‘string’ que define o caminho relativo a partir do contexto da ‘web’._
+- `path`: _Alias para @RequestMapping.path. Também é usado para especificar o URI do ponto de extremidade do recurso._
+- `params`: _Alias para @RequestMapping.params. Permite especificar parâmetros de solicitação que devem estar presentes para que o método seja acionado._
+- `headers`: _Alias para @RequestMapping.headers. Permite especificar cabeçalhos de solicitação que devem estar presentes para que o método seja acionado._
+- `consumes`: _Alias para @RequestMapping.consumes. Define os tipos de mídia que o método é capaz de consumir._
+- `produces`: _Alias para @RequestMapping.produces. Define os tipos de mídia dos quais o método consegue produzir saídas._
+
+
+${\color{yellow}@HttpExchange}$ : _@HttpExchange é uma anotação do Spring ‘Framework’ usada para declarar um método em uma interface de serviço HTTP como um ponto de extremidade HTTP. Detalhes do ponto de extremidade são definidos estaticamente através dos atributos da anotação, bem como através dos tipos de argumentos do método de entrada._
+
+**Parâmetros:**
+
+- `value / url`: _Alias para @HttpExchange.url. Especifica o URL para a solicitação, que pode ser um URL completo ou apenas um caminho relativo a um URL declarado em um nível de tipo @HttpExchange e/ou um URL base configurado globalmente. Por padrão, está vazio._
+- `method`: _Especifica o método HTTP a ser usado. Suportado tanto no nível de tipo quanto no nível de método. Quando usado no nível de tipo, todas as mapeamentos de nível de método herdam este valor. Por padrão, está vazio._
+- `contentType`: _Define o tipo de mídia para o cabeçalho "Content-Type". Suportado tanto no nível de tipo quanto no nível de método, caso em que os valores de nível de método substituem os valores de nível de tipo. Por padrão, está vazio._
+- `accept`: _Define os tipos de mídia para o cabeçalho "Accept". Suportado tanto no nível de tipo quanto no nível de método, caso em que os valores de nível de método substituem os valores de nível de tipo. Por padrão, está vazio._
+
+Esta anotação também permite o uso de vários tipos de argumentos de método, como URI, UriBuilderFactory, HttpMethod, entre outros, para configurar dinamicamente o comportamento da solicitação.
+
+${\color{yellow}@InitBinder}$ : _@InitBinder é uma anotação do Spring ‘Framework’ usada para identificar métodos que inicializam o `WebDataBinder`, que será usado para popular argumentos de objeto de comando e formulário de métodos de manipulador anotados. Essa anotação é importante para personalizar a vinculação de dados e registrar editores específicos do contexto._
+
+**Parâmetros:**
+
+- `value`: _Os nomes dos atributos de comando/formulário e/ou parâmetros de solicitação aos quais este método init-binder deve ser aplicado. O padrão é aplicar a todos os atributos de comando/formulário e a todos os parâmetros de solicitação processados pela classe do manipulador anotado. Especificar nomes de atributos de modelo ou nomes de parâmetros de solicitação aqui restringe o método init-binder a esses atributos/parâmetros específicos, com diferentes métodos init-binder tipicamente aplicando a diferentes grupos de atributos ou parâmetros._
+
+**Notas adicionais:**
+
+- _Métodos `@InitBinder` suportam todos os argumentos que os métodos `@RequestMapping` suportam, exceto objetos de comando/formulário e objetos de resultado de validação correspondentes._
+- _Métodos `@InitBinder` não devem ter um valor de retorno; eles são geralmente declarados como `void`._
+- _Argumentos típicos são `WebDataBinder` em combinação com `WebRequest` ou `Locale`, permitindo registrar editores específicos do contexto._
+
+
+${\color{yellow}@Mapping}$ : _@Mapping é uma meta-anotação do Spring ‘Framework’ que indica uma anotação de mapeamento web. Essa meta-anotação é usada para marcar outras anotações que são responsáveis por mapear solicitações HTTP para métodos específicos em controladores._
+
+Esta meta-anotação não possui parâmetros adicionais além dos padrões fornecidos pelo próprio Java para anotações.
+
+${\color{yellow}@MatrixVariable}$ : _@MatrixVariable é uma anotação do Spring ‘Framework’ que indica que um parâmetro de método deve ser vinculado a um par nome-valor dentro de um segmento de caminho. Esta anotação é suportada para métodos manipuladores anotados com @RequestMapping._
+
+**Parâmetros:**
+
+- `value / name`: _Alias para @MatrixVariable.name. Especifica o nome da variável de matriz. Se o tipo do parâmetro do método for java.util.Map e um nome de variável de matriz for especificado, o valor da variável de matriz será convertido em um java.util.Map, assumindo que uma estratégia de conversão apropriada está disponível. Se o tipo do parâmetro do método for Map<String, String> ou MultiValueMap<String, String> e nenhum nome de variável for especificado, o mapa será populado com todos os nomes e valores de variáveis de matriz._
+
+- `pathVar`: _O nome da variável de caminho URI onde a variável de matriz está localizada, se necessário para desambiguação (por exemplo, uma variável de matriz com o mesmo nome presente em mais de um segmento de caminho)._
+
+- `required`: _Define se a variável de matriz é obrigatória. Por padrão, é true, o que gera uma exceção se a variável estiver ausente na solicitação. Pode ser alterado para false para retornar null caso a variável esteja ausente. Alternativamente, pode-se fornecer um defaultValue, o que implicitamente define este flag como false._
+
+- `defaultValue`: _O valor padrão a ser utilizado como fallback. Fornecer um valor padrão implicitamente define required como false._
+
+Esta anotação é usada para vincular parâmetros de variáveis de matriz em URLs, permitindo que esses parâmetros sejam extraídos e utilizados nos métodos de controlador.
+
+${\color{yellow}@ModelAttribute}$ : _@ModelAttribute é uma anotação do Spring ‘Framework’ que vincula um parâmetro de método ou o valor de retorno de um método a um atributo de modelo nomeado, exposto a uma visualização web. É suportado para classes de controlador com métodos @RequestMapping._
+
+**Parâmetros:**
+
+- `value / name`: _Alias para @ModelAttribute.name. Especifica o nome do atributo de modelo ao qual vincular. O nome padrão do atributo de modelo é inferido a partir do tipo de atributo declarado (ou seja, o tipo do parâmetro do método ou o tipo de retorno do método), com base no nome da classe não qualificado: por exemplo, "orderAddress" para a classe "meupacote.EndereçoPedido", ou "orderAddressList" para "List<meupacote.EndereçoPedido>"._
+
+- `binding`: _Permite desativar o binding de dados diretamente em um parâmetro de método @ModelAttribute ou no atributo retornado de um método @ModelAttribute, o que impediria o binding de dados para esse atributo. Por padrão, isso é definido como true, aplicando o binding de dados. Defina isso como false para desativar o binding de dados._
+
+Esta anotação é fundamental para expor objetos de comando (command objects) ou dados de referência para uma visualização web, facilitando a integração entre o modelo de dados e as visualizações renderizadas pelo Spring MVC.
+
+${\color{yellow}@PatchMapping}$ : _@PatchMapping é uma anotação do Spring ‘Framework’ usada para mapear solicitações HTTP PATCH em métodos de controlador específicos._
+
+**Parâmetros:**
+
+- `value / name`: _É usado para especificar o URI do ponto de extremidade do recurso que deve corresponder à solicitação PATCH. O URI é uma ‘string’ que define o caminho relativo a partir do contexto da ‘web’._
+- `path`: _Também é usado para especificar o URI do ponto de extremidade do recurso._
+- `params`: _Permite especificar parâmetros de solicitação que devem estar presentes para que o método seja acionado._
+- `headers`: _Permite especificar cabeçalhos de solicitação que devem estar presentes para que o método seja acionado._
+- `consumes`: _Define os tipos de mídia que o método é capaz de consumir._
+- `produces`: _Define os tipos de mídia dos quais o método consegue produzir saídas._
+
+${\color{yellow}@PathVariable}$ : _@PathVariable é uma anotação do Spring ‘Framework’ usada para vincular um parâmetro de método a uma variável de modelo de URI. Essa anotação é usada em métodos de controlador anotados com @RequestMapping para capturar valores de variáveis de caminho em uma solicitação HTTP. Ela simplifica a extração de dados de variáveis de URI em métodos de controle de Spring MVC._
+
+**Parâmetros:**
+
+- `value / name`: _É usado para especificar o nome da variável de caminho na URI que será vinculada ao parâmetro do método._
+- `required`: _Define se a variável de caminho é obrigatória. O padrão é true, o que significa que uma exceção será lançada se a variável de caminho estiver ausente na solicitação. Altere para false se preferir permitir um valor nulo ou Optional do Java 8._
+
+${\color{yellow}@PostMapping}$ : _@PostMapping é uma anotação do Spring ‘Framework’ usada para mapear solicitações HTTP POST em métodos de controlador específicos.
+
+**Parâmetros:**
+
+- `value / name`: _É usado para especificar o URI do ponto de extremidade do recurso que deve corresponder à solicitação POST. O URI é uma ‘string’ que define o caminho relativo a partir do contexto da ‘web’._
+- `path`: _Também é usado para especificar o URI do ponto de extremidade do recurso._
+- `params`: _Permite especificar parâmetros de solicitação que devem estar presentes para que o método seja acionado._
+- `headers`: _Permite especificar cabeçalhos de solicitação que devem estar presentes para que o método seja acionado._
+- `consumes`: _Define os tipos de mídia que o método é capaz de consumir._
+- `produces`: _Define os tipos de mídia dos quais o método consegue produzir saídas._
+
+${\color{yellow}@PutMapping}$ : _@PutMapping é uma anotação do Spring ‘Framework’ usada para mapear solicitações HTTP PUT em métodos de controlador específicos._
+
+**Parâmetros:**
+
+- `value / name`: _É usado para especificar o URI do ponto de extremidade do recurso que deve corresponder à solicitação PUT. O URI é uma ‘string’ que define o caminho relativo a partir do contexto da ‘web’._
+- `path`: _Também é usado para especificar o URI do ponto de extremidade do recurso._
+- `params`: _Permite especificar parâmetros de solicitação que devem estar presentes para que o método seja acionado._
+- `headers`: _Permite especificar cabeçalhos de solicitação que devem estar presentes para que o método seja acionado._
+- `consumes`: _Define os tipos de mídia que o método é capaz de consumir._
+- `produces`: _Define os tipos de mídia dos quais o método consegue produzir saídas._
+
+${\color{yellow}@PatchExchange}$ : _@PatchExchange é uma anotação do Spring ‘Framework’ usada para mapear solicitações HTTP PATCH em métodos de serviço específicos. Essa anotação é uma forma concisa de definir um método que lida com solicitações PATCH para um recurso específico em uma aplicação web. A anotação @PatchExchange é uma abreviação para a anotação @HttpExchange com método PATCH._
+
+**Parâmetros:**
+
+- `value`: _Especifica o valor do recurso para o qual a solicitação PATCH deve ser feita._
+- `url`: _Especifica a URL do recurso para o qual a solicitação PATCH deve ser feita._
+- `contentType`: _Define o tipo de conteúdo da solicitação PATCH._
+- `accept`: _Define os tipos de mídia que o método é capaz de aceitar na resposta._
+
+${\color{yellow}@PostExchange}$ : _@PostExchange é uma anotação do Spring ‘Framework’ usada para mapear solicitações HTTP POST em métodos de serviço específicos. Essa anotação é uma forma concisa de definir um método que lida com solicitações POST para um recurso específico em uma aplicação web. A anotação @PostExchange é uma abreviação para a anotação @HttpExchange com método POST._
+
+**Parâmetros:**
+
+- `value`: _Especifica o valor do recurso para o qual a solicitação POST deve ser feita._
+- `url`: _Especifica a URL do recurso para o qual a solicitação POST deve ser feita._
+- `contentType`: _Define o tipo de conteúdo da solicitação POST._
+- `accept`: _Define os tipos de mídia que o método é capaz de aceitar na resposta._
+
+${\color{yellow}@PutExchange}$ : _@PutExchange é uma anotação do Spring ‘Framework’ usada para mapear solicitações HTTP PUT em métodos de serviço específicos. Essa anotação é uma forma concisa de definir um método que lida com solicitações PUT para um recurso específico em uma aplicação web. A anotação @PutExchange é uma abreviação para a anotação @HttpExchange com método PUT._
+
+**Parâmetros:**
+
+- `value`: _Especifica o valor do recurso para o qual a solicitação PUT deve ser feita._
+- `url`: _Especifica a URL do recurso para o qual a solicitação PUT deve ser feita._
+- `contentType`: _Define o tipo de conteúdo da solicitação PUT._
+- `accept`: _Define os tipos de mídia que o método é capaz de aceitar na resposta._
+
+${\color{yellow}@RequestScope}$ : _@RequestScope é uma anotação do Spring ‘Framework’ que especializa o escopo de {@link Scope @Scope} para um componente cujo ciclo de vida está vinculado à requisição web atual. Esta anotação atua como uma abreviação para {@code @Scope("request")} com {@link #proxyMode} padrão definido como {@link ScopedProxyMode#TARGET_CLASS TARGET_CLASS}._
+
+**Parâmetros:**
+
+- `proxyMode`: _Define o modo de proxy para o escopo, onde {@link ScopedProxyMode#TARGET_CLASS TARGET_CLASS} é o padrão._
+
+A anotação `@RequestScope` pode ser usada como uma meta-anotação para criar anotações compostas personalizadas.
+
+${\color{yellow}@RequestAttribute}$ : _@RequestAttribute é uma anotação do Spring ‘Framework’ usada para vincular um parâmetro de método a um atributo de requisição. A principal motivação é fornecer acesso conveniente aos atributos de requisição a partir de um método de controlador com verificação opcional/necessária e conversão para o tipo de parâmetro de método alvo._
+
+**Parâmetros:**
+
+- `value / name`: _É usado para especificar o nome do atributo de requisição ao qual se vincular. O nome padrão é inferido a partir do nome do parâmetro do método._
+- `required`: _Define se o atributo de requisição é obrigatório. Por padrão, é {@code true}, o que resulta em uma exceção se o atributo estiver ausente._
+
+A anotação `@RequestAttribute` facilita o acesso aos atributos de requisição diretamente nos métodos de controlador do Spring.
+
+${\color{yellow}@RequestBody}$ : _@RequestBody é uma anotação do Spring ‘Framework’ usada para vincular um parâmetro de método ao corpo da solicitação ‘web’. O corpo da solicitação é convertido através de um ${\color{blue}HttpMessageConverter}$ para resolver o argumento do método, dependendo do tipo de conteúdo da solicitação. Opcionalmente, a validação automática pode ser aplicada anotando o argumento com ${\color{blue}@Valid}$._
+
+**Parâmetros:**
+
+- `value / name`: _Não aplicável nesta anotação._
+- `required`: _Indica se o conteúdo do corpo da solicitação é obrigatório. O padrão é ${\color{blue}true}$, o que resulta em uma exceção se o corpo estiver ausente. Mude para ${\color{blue}false}$ se preferir passar ${\color{blue}null}$ quando o corpo da solicitação for ${\color{blue}null}$._
+
+
+${\color{yellow}@RequestHeader}$ : _@RequestHeader é uma anotação do Spring ‘Framework’ usada para vincular um parâmetro de método a um cabeçalho de solicitação ‘web’. Se o parâmetro do método for um ${\color{blue}Map<String, String>}$, ${\color{blue}MultiValueMap<String, String>}$ ou ${\color{blue}HttpHeaders}$, o mapa será populado com todos os nomes e valores dos cabeçalhos._
+
+**Parâmetros:**
+
+- `value / name`: _O nome do cabeçalho de solicitação a ser vinculado._
+- `required`: _Indica se o cabeçalho é obrigatório. O padrão é ${\color{blue}true}$, o que resulta em uma exceção se o cabeçalho estiver ausente na solicitação. Mude para ${\color{blue}false}$ se preferir um valor ${\color{blue}null}$ se o cabeçalho não estiver presente._
+- `defaultValue`: _O valor padrão a ser usado como fallback. Fornecer um valor padrão implicitamente define ${\color{blue}required}$ como ${\color{blue}false}$._
+
+${\color{yellow}@RequestMapping}$ : _@RequestMapping é uma anotação do Spring ‘Framework’ usada para mapear solicitações ‘web’ para métodos em classes de manipulação de solicitações, com assinaturas de métodos flexíveis._
+
+**Parâmetros:**
+
+- `value / path`: _URIs de mapeamento de caminho, por exemplo, "/perfil". Padrão para @RequestMapping. O padrão é aplicável ao nível do tipo e também ao nível do método!_
+- `method`: _Os métodos de solicitação HTTP para os quais mapear: GET, POST, HEAD, OPTIONS, PUT, PATCH, DELETE, TRACE. Suportado no nível do tipo e do método!_
+- `params`: _Os parâmetros da solicitação mapeada, estreitando o mapeamento primário._
+- `headers`: _Os cabeçalhos da solicitação mapeada, estreitando o mapeamento primário._
+- `consumes`: _Restringe o mapeamento primário por tipos de mídia que podem ser consumidos pelo manipulador mapeado._
+- `produces`: _Restringe o mapeamento primário por tipos de mídia que podem ser produzidos pelo manipulador mapeado._
+
+${\color{yellow}@RequestParam}$ : _@RequestParam é uma anotação do Spring ‘Framework’ usada para vincular um parâmetro de método a um parâmetro de solicitação ‘web’._
+
+**Parâmetros:**
+
+- `value / name`: _O nome do parâmetro de solicitação a ser vinculado._
+- `required`: _Se o parâmetro é obrigatório. O padrão é verdadeiro, levando a uma exceção se o parâmetro estiver ausente na solicitação._
+- `defaultValue`: _O valor padrão a ser usado se o parâmetro de solicitação não for fornecido ou tiver um valor vazio._
+
+${\color{yellow}@RequestPart}$ : _@RequestPart é uma anotação do Spring ‘Framework’ usada para associar uma parte de uma solicitação "multipart/form-data" a um argumento de método._
+
+**Parâmetros:**
+
+- `value / name`: _O nome da parte na solicitação "multipart/form-data" a ser associada._
+- `required`: _Se a parte é obrigatória. O padrão é verdadeiro, levando a uma exceção se a parte estiver ausente na solicitação._
+
+${\color{yellow}@ResponseBody}$ : _@ResponseBody é uma anotação do Spring Framework usada para indicar que o valor de retorno de um método deve ser vinculado ao corpo da resposta da web._
+
+${\color{yellow}@ResponseStatus}$ : _@ResponseStatus é uma anotação do Spring Framework usada para marcar um método ou classe de exceção com um código de status e razão que devem ser retornados._
+
+**Parâmetros:**
+
+- `value`: _O código de status HTTP a ser usado para a resposta._
+- `reason`: _Defina o motivo como um valor não vazio para que seja usado para enviar uma página de erro do contêiner do Servlet._
+
+Esta anotação permite definir o código de status e a razão que devem ser retornados em resposta a uma solicitação, sendo aplicada quando o método de manipulação é invocado. No entanto, ela não substitui as informações de status definidas por outros meios, como ResponseEntity ou redirecionamentos.
+
+${\color{yellow}@RestController}$ : _@RestController é uma anotação do Spring Framework que combina as anotações @Controller e @ResponseBody. Isso indica que os métodos marcados com @RequestMapping dentro dessa classe devem retornar diretamente o objeto e não uma visualização, permitindo a criação de APIs RESTful de maneira simplificada._
+
+**Parâmetros:**
+
+- `value`: _Indica um nome sugerido para o componente lógico, que pode ser transformado em um bean do Spring quando o componente é detectado automaticamente._
+
+Essa anotação é especialmente útil para criar controladores que respondem diretamente com objetos JSON ou XML, sem a necessidade de uma visualização intermediária. Ela é processada automaticamente pelo Spring se um par apropriado de `HandlerMapping` e `HandlerAdapter` estiver configurado, como o par padrão `RequestMappingHandlerMapping` e `RequestMappingHandlerAdapter`.
+
+${\color{yellow}@ControllerAdvice}$ : _@ControllerAdvice é uma anotação do Spring ‘Framework’ que define um componente que intercepta os controllers para customizar o comportamento de exceções. Quando combinado com @ExceptionHandler, é usado para capturar exceções globais em toda a aplicação Spring MVC._
+
+**Parâmetros:**
+
+- `name`: _Define um nome para o componente de advice._
+- `basePackages`: _Array de strings que define os pacotes base onde os controllers devem ser incluídos._
+- `basePackageClasses`: _Array de classes que define classes base que servem como ponto de referência para incluir controllers._
+- `assignableTypes`: _Array de classes que define tipos de classes aos quais os controllers devem ser atribuíveis para serem incluídos._
+- `annotations`: _Array de classes de anotações que define anotações que os controllers devem ter para serem incluídos._
+
+
+${\color{yellow}@SessionScope}$ : _@SessionScope é uma especialização de @Scope para um componente cujo ciclo de vida está vinculado à sessão web atual. Esta anotação atua como um atalho para @Scope("session") com o modo de proxy padrão configurado como TARGET_CLASS._
+
+**Parâmetros:**
+
+- `proxyMode`: _Define o modo de proxy por padrão utiliza o ScopedProxyMode.TARGET_CLASS._
+
+
+${\color{yellow}@SessionAttribute}$ : _@SessionAttribute é uma anotação do Spring ‘Framework’ usada para vincular um parâmetro de método a um atributo de sessão. A principal motivação é fornecer acesso conveniente a atributos de sessão existentes e permanentes (por exemplo, objeto de autenticação do usuário) com uma verificação opcional/obrigatória e um cast para o tipo de parâmetro de método alvo. Para casos de uso que exigem adição ou remoção de atributos de sessão, considere injetar org.springframework.web.context.request.WebRequest ou jakarta.servlet.http.HttpSession no método do controlador. Para armazenamento temporário de atributos de modelo na sessão como parte do fluxo de trabalho para um controlador, considere usar SessionAttributes em vez disso._
+
+**Parâmetros:**
+
+- `value / name`: _Alias para especificar o nome do atributo de sessão a ser vinculado. O nome padrão é inferido a partir do nome do parâmetro do método._
+- `required`: _Indica se o atributo de sessão é obrigatório. O padrão é true, o que resulta em uma exceção se o atributo estiver ausente na sessão ou se não houver sessão. Altere para false se preferir null ou Optional do Java 8 caso o atributo não exista na sessão._
+
+${\color{yellow}@SessionAttributes}$ : _@SessionAttributes é uma anotação do Spring ‘Framework’ que indica os atributos de sessão que um manipulador específico utiliza. Esta anotação geralmente lista os nomes dos atributos de modelo que devem ser armazenados de forma transparente na sessão ou em algum armazenamento de conversação, servindo como beans para preenchimento de formulários. Declarada no nível de tipo, aplica-se aos atributos de modelo com os quais a classe de manipulador anotada opera._
+
+**Parâmetros:**
+
+- `value / names`: _Alias para especificar os nomes dos atributos de sessão no modelo que devem ser armazenados na sessão ou em algum armazenamento de conversação. Isso indica os nomes dos atributos de modelo. Os nomes dos atributos de sessão podem ou não corresponder aos nomes dos atributos de modelo. Portanto, as aplicações não devem depender dos nomes dos atributos de sessão, mas sim operar apenas no modelo._
+- `types`: _Os tipos de atributos de sessão no modelo que devem ser armazenados na sessão ou em algum armazenamento de conversação. Todos os atributos de modelo desses tipos serão armazenados na sessão, independentemente do nome do atributo._
+
+## Spring-jms
 :warning: **CONTINUA** :warning:
